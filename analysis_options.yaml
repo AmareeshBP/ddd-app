@@ -1,0 +1,10 @@
+include: package:lint/analysis_options.yaml
+
+analyzer:
+  errors:
+    prefer_const_constructors: error
+    avoid_unnecessary_containers: warning
+    unnecessary_const: warning
+    missing_return: error
+    must_be_immutable: error
+    
