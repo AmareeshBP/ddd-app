@@ -1,11 +1,12 @@
 import 'dart:ui';
 
 import 'package:dartz/dartz.dart';
-import 'package:ddd_app/domain/core/failures.dart';
-import 'package:ddd_app/domain/core/value_objects.dart';
-import 'package:ddd_app/domain/core/value_transformers.dart';
-import 'package:ddd_app/domain/core/value_validators.dart';
 import 'package:kt_dart/collection.dart';
+
+import '../core/failures.dart';
+import '../core/value_objects.dart';
+import '../core/value_transformers.dart';
+import '../core/value_validators.dart';
 
 class NoteBody extends ValueObject<String> {
   @override
