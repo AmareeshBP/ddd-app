@@ -25,6 +25,25 @@ const $NoteActorEvent = _$NoteActorEventTearOff();
 mixin _$NoteActorEvent {
   Note get note;
 
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result deleted(Note note),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result deleted(Note note),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result deleted(_Deleted value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result deleted(_Deleted value),
+    @required Result orElse(),
+  });
+
   $NoteActorEventCopyWith<NoteActorEvent> get copyWith;
 }
 
@@ -120,6 +139,50 @@ class _$_Deleted implements _Deleted {
   @override
   _$DeletedCopyWith<_Deleted> get copyWith =>
       __$DeletedCopyWithImpl<_Deleted>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result deleted(Note note),
+  }) {
+    assert(deleted != null);
+    return deleted(note);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result deleted(Note note),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (deleted != null) {
+      return deleted(note);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result deleted(_Deleted value),
+  }) {
+    assert(deleted != null);
+    return deleted(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result deleted(_Deleted value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (deleted != null) {
+      return deleted(this);
+    }
+    return orElse();
+  }
 }
 
 abstract class _Deleted implements NoteActorEvent {
