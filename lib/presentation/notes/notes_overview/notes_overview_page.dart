@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:ddd_app/presentation/notes/notes_overview/widget/notes_overview_body_widget.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,7 @@ class NotesOverviewPage extends StatelessWidget {
           BlocListener<AuthBloc, AuthState>(
             listener: (context, state) => state.maybeMap(
               unauthenticated: (_) => ExtendedNavigator.of(context)
-                  .pushReplacementNamed(Routes.notesOverviewPage),
+                  .pushReplacementNamed(Routes.signInPage),
               orElse: () {},
             ),
           ),
@@ -64,6 +65,7 @@ class NotesOverviewPage extends StatelessWidget {
               ),
             ],
           ),
+          body: NotesOverviewBodyWidget(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               // TODO: Navigate to NoteFormPage
