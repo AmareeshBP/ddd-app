@@ -49,7 +49,7 @@ class SignInForm extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.mail),
                   labelText: 'Email',
                 ),
@@ -72,7 +72,7 @@ class SignInForm extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.lock),
                   labelText: 'Password',
                 ),

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ddd_app/presentation/notes/notes_overview/widget/notes_overview_body_widget.dart';
+import 'package:ddd_app/presentation/notes/notes_overview/widget/uncompleted_switch.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,16 +54,13 @@ class NotesOverviewPage extends StatelessWidget {
           appBar: AppBar(
             title: const Text('Notes'),
             leading: IconButton(
-              icon: Icon(Icons.exit_to_app),
+              icon: const Icon(Icons.exit_to_app),
               onPressed: () {
                 context.bloc<AuthBloc>().add(const AuthEvent.signedOut());
               },
             ),
             actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.indeterminate_check_box),
-                onPressed: () {},
-              ),
+              UnCompletedSwitch(),
             ],
           ),
           body: NotesOverviewBodyWidget(),
@@ -70,7 +68,7 @@ class NotesOverviewPage extends StatelessWidget {
             onPressed: () {
               // TODO: Navigate to NoteFormPage
             },
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
         ),
       ),

@@ -42,7 +42,7 @@ class NoteWatcherBloc extends Bloc<NoteWatcherEvent, NoteWatcherState> {
       watchUnCompletedStarted: (e) async* {
         yield const NoteWatcherState.loadInProgress();
         await _noteStreamSubscription?.cancel();
-        _noteStreamSubscription = _noteRepository.watchAll().listen(
+        _noteStreamSubscription = _noteRepository.watchUnCompleted().listen(
               (failureOrNotes) =>
                   add(NoteWatcherEvent.notesReceived(failureOrNotes)),
             );
