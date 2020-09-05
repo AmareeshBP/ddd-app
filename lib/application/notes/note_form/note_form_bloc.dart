@@ -28,7 +28,7 @@ class NoteFormBloc extends Bloc<NoteFormEvent, NoteFormState> {
   Stream<NoteFormState> mapEventToState(
     NoteFormEvent event,
   ) async* {
-    event.map(
+    yield* event.map(
       initialized: (e) async* {
         yield e.initialNoteOption.fold(
           () => state,

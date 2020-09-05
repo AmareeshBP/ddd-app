@@ -1,5 +1,6 @@
 {
-  "explorerExclude.backup": {
+  "explorerExclude.backup": null,
+  "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,
@@ -31,38 +32,5 @@
     "app.*.map.json": true,
     "!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages": true,
     "**/*.*.dart": true
-  },
-  "files.exclude": {
-    "**/.git": false,
-    "**/.svn": false,
-    "**/.hg": false,
-    "**/CVS": false,
-    "**/.DS_Store": false,
-    "*.class": false,
-    "*.log": false,
-    "*.pyc": false,
-    "*.swp": false,
-    ".DS_Store": false,
-    ".atom/": false,
-    ".buildlog/": false,
-    ".history": false,
-    ".svn/": false,
-    "*.iml": false,
-    "*.ipr": false,
-    "*.iws": false,
-    ".idea/": false,
-    "**/doc/api/": false,
-    ".dart_tool/": false,
-    ".flutter-plugins": false,
-    ".flutter-plugins-dependencies": false,
-    ".packages": false,
-    ".pub-cache/": false,
-    ".pub/": false,
-    "build/": false,
-    "lib/generated_plugin_registrant.dart": false,
-    "app.*.symbols": false,
-    "app.*.map.json": false,
-    "!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages": false,
-    "**/*.*.dart": false
   }
 }
