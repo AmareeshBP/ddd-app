@@ -80,7 +80,7 @@ class NoteRepository implements INoteRepository {
   }
 
   @override
-  Future<Either<NoteFailure, Unit>> delete(Note note) async {
+  Future<Either<NoteFailure, Unit>> update(Note note) async {
     try {
       final userDoc = await _firestore.userDocument();
       final noteDto = NoteDto.fromDomain(note);
@@ -102,7 +102,7 @@ class NoteRepository implements INoteRepository {
   }
 
   @override
-  Future<Either<NoteFailure, Unit>> update(Note note) async {
+  Future<Either<NoteFailure, Unit>> delete(Note note) async {
     try {
       final userDoc = await _firestore.userDocument();
       final noteId = note.id.getOrCrash();
