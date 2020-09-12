@@ -13,7 +13,6 @@ class CriticalFailureDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const Text(
@@ -31,17 +30,15 @@ class CriticalFailureDisplay extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           FlatButton(
-              onPressed: () {
-                print('Sending email!');
-              },
+              onPressed: () {},
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Icon(Icons.mail),
-                  const SizedBox(
+                children: const <Widget>[
+                  Icon(Icons.mail),
+                  SizedBox(
                     width: 4,
                   ),
-                  const Text('I NEED HELP')
+                  Text('I NEED HELP')
                 ],
               ))
         ],

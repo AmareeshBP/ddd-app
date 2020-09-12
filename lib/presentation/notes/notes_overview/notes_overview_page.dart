@@ -30,7 +30,7 @@ class NotesOverviewPage extends StatelessWidget {
             listener: (context, state) => state.maybeMap(
               unauthenticated: (_) =>
                   ExtendedNavigator.of(context).replace(Routes.signInPage),
-              orElse: () {},
+              orElse: () => null,
             ),
           ),
           BlocListener<NoteActorBloc, NoteActorState>(
@@ -45,8 +45,9 @@ class NotesOverviewPage extends StatelessWidget {
                     unableToUpdate: (_) => 'Impossoble error',
                   ),
                 );
+                return;
               },
-              orElse: () {},
+              orElse: () => null,
             ),
           )
         ],

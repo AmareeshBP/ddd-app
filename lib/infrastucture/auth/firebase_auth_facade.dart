@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 
@@ -34,7 +33,7 @@ class FirebaseAuthFacade implements IAuthFacade {
         password: passwordStr,
       );
       return right(unit);
-    } on PlatformException catch (e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
         return left(const AuthFailure.emailAlreadyInUse());
       } else {
@@ -56,7 +55,7 @@ class FirebaseAuthFacade implements IAuthFacade {
         password: passwordStr,
       );
       return right(unit);
-    } on PlatformException catch (e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'ERROR_WRONG_PASSWORD' ||
           e.code == 'ERROR_USER_NOT_FOUND') {
         return left(const AuthFailure.invalidEmailAndPasswordCombination());
@@ -75,22 +74,21 @@ class FirebaseAuthFacade implements IAuthFacade {
       }
       final googleAuthentication = await googleUser.authentication;
 
-      final authCredential = GoogleAuthProvider.getCredential(
+      final authCredential = GoogleAuthProvider.credential(
         idToken: googleAuthentication.idToken,
         accessToken: googleAuthentication.accessToken,
       );
 
       await _firebaseAuth.signInWithCredential(authCredential);
       return right(unit);
-    } on PlatformException {
+    } on FirebaseAuthException {
       return left(const AuthFailure.serverError());
     }
   }
 
   @override
-  Future<Option<User>> getSignedInUser() => _firebaseAuth
-      .currentUser()
-      .then((firebaseUser) => optionOf(firebaseUser?.toDomain()));
+  Future<Option<User>> getSignedInUser() async =>
+      optionOf(_firebaseAuth.currentUser?.toDomain());
 
   @override
   Future<void> signOut() => Future.wait([

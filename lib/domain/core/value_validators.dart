@@ -17,8 +17,9 @@ Either<ValueFailure<String>, String> validateStringNotEmpty(String input) {
 }
 
 Either<ValueFailure<String>, String> validateSingleLine(String input) {
-  if (input.contains('\n'))
+  if (input.contains('\n')) {
     return Left(ValueFailure.multiLine(failedValue: input));
+  }
   return Right(input);
 }
 

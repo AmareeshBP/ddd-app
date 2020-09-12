@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:ddd_app/domain/notes/i_note_repository.dart';
 import 'package:ddd_app/infrastucture/notes/note_dtos.dart';
-import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:ddd_app/domain/notes/note_failure.dart';
@@ -12,7 +11,7 @@ import '../core/firestore_helpers.dart';
 
 @LazySingleton(as: INoteRepository)
 class NoteRepository implements INoteRepository {
-  final Firestore _firestore;
+  final FirebaseFirestore _firestore;
 
   NoteRepository(this._firestore);
 
@@ -23,13 +22,13 @@ class NoteRepository implements INoteRepository {
         .snapshots()
         .map(
           (snapshot) => right<NoteFailure, KtList<Note>>(
-            snapshot.documents
+            snapshot.docs
                 .map((doc) => NoteDto.fromFireStore(doc).toDomain())
                 .toImmutableList(),
           ),
         )
         .onErrorReturnWith((e) {
-      if (e is PlatformException && e.message.contains('PERMISSION_DENIED')) {
+      if (e is FirebaseException && e.message.contains('PERMISSION_DENIED')) {
         return left(const NoteFailure.insufficientPermission());
       } else {
         return left(const NoteFailure.unexpected());
@@ -42,8 +41,8 @@ class NoteRepository implements INoteRepository {
     final userDoc = await _firestore.userDocument();
     yield* userDoc.noteCollection
         .snapshots()
-        .map((snapshot) => snapshot.documents
-            .map((doc) => NoteDto.fromFireStore(doc).toDomain()))
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => NoteDto.fromFireStore(doc).toDomain()))
         .map((notes) => right<NoteFailure, KtList<Note>>(
               notes
                   .where((note) =>
@@ -51,7 +50,7 @@ class NoteRepository implements INoteRepository {
                   .toImmutableList(),
             ))
         .onErrorReturnWith((e) {
-      if (e is PlatformException && e.message.contains('PERMISSION_DENIED')) {
+      if (e is FirebaseException && e.message.contains('PERMISSION_DENIED')) {
         return left(const NoteFailure.insufficientPermission());
       } else {
         return left(const NoteFailure.unexpected());
@@ -65,12 +64,10 @@ class NoteRepository implements INoteRepository {
       final userDoc = await _firestore.userDocument();
       final noteDto = NoteDto.fromDomain(note);
 
-      await userDoc.noteCollection
-          .document(noteDto.id)
-          .setData(noteDto.toJson());
+      await userDoc.noteCollection.doc(noteDto.id).set(noteDto.toJson());
 
       return right(unit);
-    } on PlatformException catch (e) {
+    } on FirebaseException catch (e) {
       if (e.message.contains('PERMISSION_DENIED')) {
         return left(const NoteFailure.insufficientPermission());
       } else {
@@ -85,12 +82,10 @@ class NoteRepository implements INoteRepository {
       final userDoc = await _firestore.userDocument();
       final noteDto = NoteDto.fromDomain(note);
 
-      await userDoc.noteCollection
-          .document(noteDto.id)
-          .updateData(noteDto.toJson());
+      await userDoc.noteCollection.doc(noteDto.id).update(noteDto.toJson());
 
       return right(unit);
-    } on PlatformException catch (e) {
+    } on FirebaseException catch (e) {
       if (e.message.contains('PERMISSION_DENIED')) {
         return left(const NoteFailure.insufficientPermission());
       } else if (e.message.contains('NOT_FOUND')) {
@@ -107,10 +102,10 @@ class NoteRepository implements INoteRepository {
       final userDoc = await _firestore.userDocument();
       final noteId = note.id.getOrCrash();
 
-      await userDoc.noteCollection.document(noteId).delete();
+      await userDoc.noteCollection.doc(noteId).delete();
 
       return right(unit);
-    } on PlatformException catch (e) {
+    } on FirebaseException catch (e) {
       if (e.message.contains('PERMISSION_DENIED')) {
         return left(const NoteFailure.insufficientPermission());
       } else if (e.message.contains('NOT_FOUND')) {
