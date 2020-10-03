@@ -3,8 +3,8 @@ import 'package:ddd_app/domain/notes/value_objects.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ColorFieldWidget extends StatelessWidget {
-  const ColorFieldWidget({Key key}) : super(key: key);
+class ColorField extends StatelessWidget {
+  const ColorField({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NoteFormBloc, NoteFormState>(
