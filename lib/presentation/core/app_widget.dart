@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../application/auth/auth_bloc.dart';
 import '../../injection.dart';
-import '../routes/router.gr.dart';
+import '../routes/router.gr.dart' as app_router;
 
 class AppWidget extends StatelessWidget {
   @override
@@ -19,7 +19,7 @@ class AppWidget extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Note App',
-        builder: ExtendedNavigator(router: Router()),
+        builder: ExtendedNavigator.builder(router: app_router.Router()),
         theme: ThemeData.light().copyWith(
           primaryColor: Colors.green[800],
           accentColor: Colors.blueAccent,
