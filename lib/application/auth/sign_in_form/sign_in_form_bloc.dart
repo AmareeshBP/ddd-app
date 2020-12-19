@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ddd_app/domain/auth/auth_failure.dart';
 import 'package:ddd_app/domain/auth/i_auth_facade.dart';
 import 'package:ddd_app/domain/auth/value_objects.dart';
+import 'package:ddd_app/domain/reporter/reporting_services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
@@ -17,8 +18,10 @@ part 'sign_in_form_bloc.freezed.dart';
 @injectable
 class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
   final IAuthFacade _authFacade;
+  final ReportingServices _reportingServices;
 
-  SignInFormBloc(this._authFacade) : super(SignInFormState.initial());
+  SignInFormBloc(this._authFacade, this._reportingServices)
+      : super(SignInFormState.initial());
 
   @override
   Stream<SignInFormState> mapEventToState(
@@ -55,6 +58,11 @@ class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
 
         final failureOrSccess = await _authFacade.signInWithGoogle();
 
+        await failureOrSccess.fold(
+          (_) => null,
+          (_) => _reportingServices.loggedIn(AuthMethod.google),
+        );
+
         yield state.copyWith(
           isSubmitting: false,
           authFailureOrSuccessOption: some(failureOrSccess),
@@ -84,6 +92,13 @@ class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
         password: state.password,
       );
     }
+
+    await failureOrSuccess.fold(
+      (_) => null,
+      (_) => forwardedCall == _authFacade.registerWithEmailAndPassword
+          ? _reportingServices.signedIn(AuthMethod.email)
+          : _reportingServices.loggedIn(AuthMethod.email),
+    );
 
     yield state.copyWith(
       isSubmitting: false,

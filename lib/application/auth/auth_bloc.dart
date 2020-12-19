@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:ddd_app/domain/auth/i_auth_facade.dart';
+import 'package:ddd_app/domain/reporter/reporting_services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
@@ -14,8 +15,12 @@ part 'auth_bloc.freezed.dart';
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final IAuthFacade _authFacade;
+  final ReportingServices _reportingServices;
 
-  AuthBloc(this._authFacade) : super(const AuthState.initial());
+  AuthBloc(
+    this._authFacade,
+    this._reportingServices,
+  ) : super(const AuthState.initial());
 
   @override
   Stream<AuthState> mapEventToState(
@@ -24,6 +29,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield* event.map(
       authCheckRequested: (e) async* {
         final userOption = await _authFacade.getSignedInUser();
+        await userOption.fold(
+          () => null,
+          (user) async => _reportingServices.setUser(user),
+        );
         yield userOption.fold(
           () => const AuthState.unauthenticated(),
           (_) => const AuthState.authenticated(),
