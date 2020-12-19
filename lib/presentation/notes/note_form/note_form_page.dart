@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart';
+import 'package:ddd_app/domain/reporter/reporting_services.dart';
 import 'package:ddd_app/presentation/notes/note_form/misc/todo_item_presentation_classes.dart';
 import 'package:ddd_app/presentation/notes/note_form/widgets/body_field_widget.dart';
 import 'package:ddd_app/presentation/notes/note_form/widgets/color_field_widget.dart';
 import 'package:ddd_app/presentation/notes/note_form/widgets/todo_list_tile_widget.dart';
 import 'package:ddd_app/presentation/notes/note_form/widgets/todo_list_widget.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

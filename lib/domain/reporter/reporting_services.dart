@@ -8,6 +8,11 @@ abstract class ReportingServices {
   Future<void> setUser(User user);
   Future<void> loggedIn(AuthMethod authMethod);
   Future<void> signedIn(AuthMethod authMethod);
+  Future<void> flutterError(FlutterErrorDetails details);
+  Future<void> error(dynamic exception, StackTrace stack,
+      {dynamic reason,
+      Iterable<DiagnosticsNode> information,
+      bool printDetails});
 }
 
 String getAuthMethodValue(AuthMethod authMethod) {
